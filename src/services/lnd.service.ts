@@ -6,30 +6,16 @@ import {
 } from "lightning";
 
 export const ListInvoices = async (lnd: any) => {
-  try {
-    const { invoices } = await getInvoices({ lnd });
-    return invoices;
-  } catch (error) {
-    console.log(error);
-  }
+  const { invoices } = await getInvoices({ lnd });
+  return invoices;
 };
 
-export const CreateInvoice = async (lnd: any, amount: any) => {
-  let isInvoice = false;
-  async function addInvoice() {
-    isInvoice = true;
-    await createInvoice({ lnd, tokens: amount });
-  }
-  async function getInvoice() {
-    const { invoices } = await getInvoices({ lnd });
-    return invoices[0];
-  }
-  addInvoice();
-  let rs = null;
-  if (isInvoice !== false) {
-    rs = await getInvoice();
-  }
-  return rs;
+export const CreateInvoice = async (lnd: any, amount: any) =>
+  createInvoice({ lnd, tokens: amount });
+
+export const NewInvoice = async (lnd: any) => {
+  const { invoices } = await getInvoices({ lnd });
+  return invoices[0];
 };
 
 export const GetInvoiceById = async (lnd: any, id: any) => {

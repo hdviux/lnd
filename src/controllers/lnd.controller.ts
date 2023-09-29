@@ -16,12 +16,15 @@ export const ListInvoices = async (req: Request, res: Response) => {
 
 export const CreateInvoice = async (req: Request, res: Response) => {
   try {
-    const rs = await Srv.CreateInvoice(req["lnd"], req.body.amount);
-    if (rs !== null) {
-      res.status(200).send({ status: true, data: rs });
-    } else {
-      res.status(400).send({ status: false });
-    }
+    Srv.CreateInvoice(req["lnd"], req.body.amount);
+    setTimeout(async () => {
+      const rs = await Srv.NewInvoice(req["lnd"]);
+      if (rs !== null) {
+        res.status(200).send({ status: true, data: rs });
+      } else {
+        res.status(400).send({ status: false });
+      }
+    }, 3500);
   } catch (error) {
     res.status(400).send({ status: false, message: (error as Error).message });
   }
